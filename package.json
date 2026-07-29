@@ -1,0 +1,54 @@
+{
+  "name": "battlyhy-launcher",
+  "productname": "BattlyHy Launcher",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "author": "Razor Studios",
+  "engines": {
+    "node": "^20.x.x"
+  },
+  "scripts": {
+    "start": "cross-env-shell NODE_ENV=development electron .",
+    "build": "node build.js"
+  },
+  "build": {
+    "appId": "com.battly.hytalelauncher",
+    "productName": "BattlyHy Launcher",
+    "win": {
+      "target": "nsis",
+      "icon": "src/assets/images/logo/256x256.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "keywords": [],
+  "license": "MIT",
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "electron": "^31.7.7",
+    "electron-builder": "^26.4.0"
+  },
+  "dependencies": {
+    "@aptabase/electron": "^0.3.1",
+    "@kostya-main/discord-rpc": "^1.2.1",
+    "adm-zip": "^0.5.16",
+    "archiver": "^7.0.1",
+    "axios": "^1.13.2",
+    "cross-env-shell": "^7.0.3",
+    "discord-rpc": "^4.0.1",
+    "fs-extra": "^11.3.3",
+    "node-localstorage": "^3.0.5",
+    "node-stream-zip": "^1.15.0",
+    "semver": "^7.7.3",
+    "systeminformation": "^5.30.6",
+    "uuid": "^13.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dev-kiki-coder/BattlyHy-Launcher.git"
+  },
+  "private": true
+}

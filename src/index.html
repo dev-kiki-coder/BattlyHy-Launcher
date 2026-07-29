@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Battly Launcher 4 Hytale</title>
+    <link rel="stylesheet" href="style.css?v=4">
+    <link rel="stylesheet" href="style-match.css?v=21">
+    <link rel="stylesheet" href="assets/ui-libs/fontawesome/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Rajdhani:wght@500;600;700&family=Bebas+Neue&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="bg-canvas">
+        <img id="bgLayerA" class="bg-artwork is-visible" src="assets/images/background1.webp" alt="Fantasy Background">
+        <img id="bgLayerB" class="bg-artwork" src="assets/images/background2.jpg" alt="Fantasy Background">
+        <div class="bg-vignette"></div>
+        <div class="bg-frost"></div>
+        <div class="bg-noise"></div>
+    </div>
+
+
+    <div class="title-bar">
+        <div class="title-drag-area">
+            <div class="app-logo">
+                <span class="app-title" data-i18n="app_title">BATTLY LAUNCHER 4 HYTALE</span>
+                <span class="app-subtitle">LAUNCHER 4 HYTALE</span>
+            </div>
+        </div>
+        <div class="title-actions">
+            <div class="top-account account-picker" id="accountPicker">
+                <button id="accountPickerBtn" class="account-picker-btn" type="button" aria-haspopup="listbox"
+                    aria-expanded="false">
+                    <span class="account-icon"><i class="fas fa-user-astronaut"></i></span>
+                    <span id="accountDisplayName">Player</span>
+                    <i class="fas fa-chevron-down account-chevron"></i>
+                </button>
+                <div id="accountDropdown" class="account-dropdown" role="listbox">
+                    <div id="accountOptions" class="account-options"></div>
+                    <button id="addAccountBtn" class="account-add-btn" type="button">
+                        <i class="fas fa-plus"></i>
+                        <span data-i18n="add_account_btn">Add account</span>
+                    </button>
+                </div>
+                <input type="text" id="username" class="hidden-username-input" placeholder="Nombre de usuario"
+                    data-i18n-placeholder="placeholder_username" autocomplete="off" spellcheck="false">
+            </div>
+
+            <button id="homeShortcutBtn" class="icon-btn title-nav-btn" title="Home">
+                <i class="fas fa-house"></i>
+            </button>
+            <button id="modsShortcutBtn" class="icon-btn title-nav-btn" title="Mods">
+                <i class="fas fa-puzzle-piece"></i>
+            </button>
+            <button id="settingsBtn" class="icon-btn title-nav-btn" title="Configuracion">
+                <i class="fas fa-cog"></i>
+            </button>
+            <button id="discordBtn" class="icon-btn discord-btn" title="Discord">
+                <i class="fab fa-discord"></i>
+            </button>
+            <div class="language-selector">
+                <select id="languageSelect" class="lang-dropdown">
+                    <option value="en">EN</option>
+                    <option value="es">ES</option>
+                    <option value="zh">ZH</option>
+                    <option value="de">DE</option>
+                    <option value="fr">FR</option>
+                    <option value="pt">PT</option>
+                    <option value="ru">RU</option>
+                    <option value="ja">JA</option>
+                </select>
+            </div>
+        </div>
+        <div class="window-controls">
+            <button id="minBtn" class="control-btn" title="Minimizar">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button id="closeBtn" class="control-btn close" title="Cerrar">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+
+    <div id="settingsModal" class="modal-overlay">
+        <div class="modal-content medium-modal">
+            <button class="modal-close-btn" id="closeSettingsBtn">&times;</button>
+            <h2 data-i18n="settings_title">Configuración</h2>
+
+            <div class="settings-tabs">
+                <button class="settings-tab active" data-tab="general" data-i18n="settings_tab_general">General</button>
+                <button class="settings-tab" data-tab="java" data-i18n="settings_tab_java_update">Java Update</button>
+            </div>
+
+            <div id="settings-general" class="settings-page active">
+                <div class="settings-option">
+                    <span class="setting-label" data-i18n="player_name">Player Name</span>
+                    <input type="text" id="settingsPlayerName" class="simple-input" style="width: 50%;">
+                </div>
+                <div class="settings-desc" style="margin-bottom: 20px; color: #888; font-size: 0.8rem;"
+                    data-i18n="player_name_desc">This name will be used in-game</div>
+
+                <div class="settings-option">
+                    <div style="display:flex; align-items:center; gap: 10px;">
+                        <i class="fas fa-folder-open" style="color: #8cb9dc; font-size: 1.2rem;"></i>
+                        <div>
+                            <span class="setting-label" style="display:block;" data-i18n="btn_open_location">Open Game
+                                Location</span>
+                            <small style="color: #666;" data-i18n="open_location_desc">Open the game installation
+                                folder</small>
+                        </div>
+                    </div>
+                    <button id="openLocationBtn" class="action-btn secondary-btn small-btn" style="border: none;"><i
+                            class="fas fa-external-link-alt"></i></button>
+                </div>
+
+                <div class="settings-option">
+                    <div style="display:flex; align-items:center; gap: 10px;">
+                        <i class="fas fa-tools" style="color: #8cb9dc; font-size: 1.2rem;"></i>
+                        <div>
+                            <span class="setting-label" style="display:block;" data-i18n="setting_repair">Reparar
+                                Juego</span>
+                            <small style="color: #666;" data-i18n="repair_desc">Reinstall game files</small>
+                        </div>
+                    </div>
+                    <button id="repairGameBtn" class="action-btn secondary-btn small-btn" style="border: none;"><i
+                            class="fas fa-sync"></i></button>
+                </div>
+
+                <div class="settings-option">
+                    <div style="display:flex; align-items:center; gap: 10px;">
+                        <i class="fas fa-file-lines" style="color: #8cb9dc; font-size: 1.2rem;"></i>
+                        <div>
+                            <span class="setting-label" style="display:block;" data-i18n="setting_game_logs">Logs del
+                                juego</span>
+                            <small style="color: #666;" data-i18n="game_logs_desc">Ver logs para diagnosticar
+                                errores</small>
+                        </div>
+                    </div>
+                    <button id="openGameLogsBtn" class="action-btn secondary-btn small-btn" style="border: none;"><i
+                            class="fas fa-terminal"></i></button>
+                </div>
+
+                <div style="margin-top: 20px;">
+                    <div class="settings-option">
+                        <span class="setting-label" data-i18n="setting_gpu">Preferencia GPU</span>
+                        <div style="display: flex; gap: 5px;">
+                            <button class="gpu-btn active" data-val="auto">AUTO</button>
+                            <button class="gpu-btn" data-val="integrated">INTEGRATED</button>
+                            <button class="gpu-btn" data-val="dedicated">DEDICATED</button>
+                        </div>
+                    </div>
+                    <div style="color: #8cb9dc; font-size: 0.8rem; margin-top: 5px;">
+                        <i class="fas fa-info-circle"></i> <span id="gpuDetectedText"
+                            data-i18n="gpu_detecting">Detecting...</span>
+                    </div>
+                </div>
+
+                <div class="settings-option" style="margin-top: 20px;">
+                    <span class="setting-label" data-i18n="setting_hide_launcher">Ocultar Launcher al jugar</span>
+                    <label class="switch">
+                        <input type="checkbox" id="hideLauncherCheck">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+
+            </div>
+
+            <div id="settings-java" class="settings-page" style="display: none;">
+                <h3 style="display:flex; align-items:center; gap: 10px; color: #fff; margin-bottom: 20px;">
+                    <i class="fas fa-coffee" style="color: #8cb9dc;"></i> <span data-i18n="setting_java">Java
+                        Runtime</span>
+                </h3>
+
+                <div class="settings-option">
+                    <span class="setting-label" data-i18n="java_custom_use">Use Custom Java Path</span>
+                    <label class="switch">
+                        <input type="checkbox" id="useCustomJavaCheck">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <div class="settings-desc" style="margin-bottom: 20px;" data-i18n="java_custom_desc">Override bundled
+                    Java</div>
+
+                <div id="customJavaArea" class="settings-box"
+                    style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); opacity: 0.5; pointer-events: none;">
+                    <label style="display:block; color: #ccc; margin-bottom: 10px;" data-i18n="java_path_label">Java
+                        Executable Path</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="javaPathInput" class="simple-input" placeholder="Select Java path...">
+                        <button id="browseJavaBtn" class="action-btn primary-btn small-btn"
+                            style="background: rgba(7, 23, 41, 0.85); border: 1px solid rgba(255, 255, 255, 0.2);"
+                            data-i18n="btn_browse">Browse</button>
+                    </div>
+                    <div style="color: #8cb9dc; font-size: 0.8rem; margin-top: 10px;">
+                        <i class="fas fa-info-circle"></i> <span data-i18n="java_path_desc">Select installation
+                            folder</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settings-profiles" class="settings-page" style="display: none;">
+                <div class="settings-option" style="flex-direction: column; align-items: flex-start;">
+                    <span class="setting-label">Active Profile</span>
+                    <select id="profileSelect" class="settings-select" style="width: 100%; margin-top: 10px;">
+                        <option value="default">Default</option>
+                    </select>
+                </div>
+                <div style="margin-top: 15px; display: flex; gap: 10px;">
+                    <button id="createProfileBtn" class="action-btn primary-btn small-btn" style="flex: 1;">+
+                        New</button>
+                    <button id="deleteProfileBtn" class="action-btn secondary-btn small-btn"
+                        style="flex: 1;">Delete</button>
+                </div>
+                <div class="input-group" style="margin-top: 20px;">
+                    <label>Profile Name</label>
+                    <input type="text" id="profileNameInput" class="simple-input" placeholder="My Profile">
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="onboardingView" class="onboarding-overlay" style="display: none;">
+        <div class="onboarding-content">
+            <div class="onboarding-anim-wrapper">
+                <i class="fas fa-rocket onboarding-icon"></i>
+            </div>
+
+            <div id="onboardingStep1" class="onboarding-slide active">
+                <h1 data-i18n="welcome_title" class="fade-in-up">Welcome to Battly</h1>
+                <p data-i18n="welcome_subtitle" class="fade-in-up delay-1">Your adventure starts here</p>
+
+                <div class="onboarding-step step-lang fade-in-up delay-2">
+                    <div class="onb-lang-cards">
+                        <div class="onb-lang-card" data-lang="en">
+                            <span class="flag">EN</span>
+                            <span>🇺🇸 English</span>
+                        </div>
+                        <div class="onb-lang-card" data-lang="es">
+                            <span class="flag">ES</span>
+                            <span>🇪🇸 Espanol</span>
+                        </div>
+                        <div class="onb-lang-card" data-lang="zh">
+                            <span class="flag">ZH</span>
+                            <span>🇨🇳 Chinese</span>
+                        </div>
+                        <div class="onb-lang-card" data-lang="de">
+                            <span class="flag">DE</span>
+                            <span>🇩🇪 Deutsch</span>
+                        </div>
+                        <div class="onb-lang-card" data-lang="fr">
+                            <span class="flag">FR</span>
+                            <span>🇫🇷 Francais</span>
+                        </div>
+                        <div class="onb-lang-card" data-lang="pt">
+                            <span class="flag">PT</span>
+                            <span>🇵🇹 Portugues</span>
+                        </div>
+                        <div class="onb-lang-card" data-lang="ru">
+                            <span class="flag">RU</span>
+                            <span>🇷🇺 Russian</span>
+                        </div>
+                        <div class="onb-lang-card" data-lang="ja">
+                            <span class="flag">JA</span>
+                            <span>🇯🇵 Japanese</span>
+                        </div>
+                    </div>
+                </div>
+                <button class="onboarding-btn next-step-btn fade-in-up delay-3" data-next="onboardingStep2"
+                    data-i18n="btn_next">Next</button>
+            </div>
+
+            <div id="onboardingStep2" class="onboarding-slide" style="display: none;">
+                <h2 data-i18n="onboarding_username_label">Choose your username</h2>
+                <div class="onboarding-step step-user">
+                    <input type="text" id="onboardingUser" class="onboarding-input" spellcheck="false"
+                        placeholder="Player" data-i18n-placeholder="placeholder_player">
+                </div>
+                <div class="step-nav">
+                    <button class="onboarding-btn secondary back-step-btn" data-prev="onboardingStep1"
+                        data-i18n="btn_back">Back</button>
+                    <button id="btnToStep3" class="onboarding-btn next-step-btn" disabled data-next="onboardingStep3"
+                        data-i18n="btn_next">Next</button>
+                </div>
+            </div>
+
+            <div id="onboardingStep3" class="onboarding-slide" style="display: none;">
+                <h2 data-i18n="onboarding_terms_title">Terms and Conditions</h2>
+                <div class="onboarding-step step-terms">
+                    <label class="terms-label">
+                        <input type="checkbox" id="termsCheck">
+                        <span>
+                            <span data-i18n="onboarding_terms">I accept the </span>
+                            <a href="#" class="legal-link" data-url="https://battlylauncher.com/terminos"
+                                data-i18n="onboarding_terms_link">Terms</a>
+                            <span data-i18n="onboarding_and"> and </span>
+                            <a href="#" class="legal-link" data-url="https://battlylauncher.com/politica-privacidad"
+                                data-i18n="onboarding_privacy_link">Privacy Policy</a>
+                        </span>
+                    </label>
+                </div>
+                <div class="step-nav">
+                    <button class="onboarding-btn secondary back-step-btn" data-prev="onboardingStep2"
+                        data-i18n="btn_back">Back</button>
+                    <button id="startBtn" class="onboarding-btn" disabled data-i18n="btn_get_started">Get
+                        Started</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-area">
+        <div id="homeView" class="view active">
+            <div class="home-main">
+                <div class="home-header">
+                    <p class="home-kicker" data-i18n="home_kicker_early_access">EARLY ACCESS</p>
+                    <h1 class="big-logo">HYTALE</h1>
+                    <p class="support-msg" data-i18n="support_msg">The moment has arrived, Hytale is releasing into
+                        Early Access today!</p>
+                </div>
+            </div>
+
+            <div class="home-bottom">
+                <div class="news-rail">
+                    <div class="news-strip-head">
+                        <span class="news-strip-title" data-i18n="news_default_title">Hotfixes: January</span>
+                        <button id="openNewsBtn" class="news-read-more" type="button"><i
+                                class="fas fa-up-right-from-square"></i>
+                            <span data-i18n="btn_read_more">READ MORE</span></button>
+                    </div>
+                    <div class="news-divider" aria-hidden="true"></div>
+                    <div id="newsContainer" class="news-grid">
+                        <div class="loader-container">
+                            <i class="fas fa-circle-notch fa-spin"></i>
+                        </div>
+                    </div>
+                    <div id="newsDots" class="news-dots" aria-label="news pagination"></div>
+                </div>
+
+                <div class="home-footer">
+                    <div class="status-overlay">
+                        <div class="center-status">
+                            <p id="status"></p>
+                        </div>
+
+                        <div id="progressContainer" class="progress-container" style="display: none;">
+                            <div id="progressBar" class="progress-bar"></div>
+                            <div id="progressText" class="progress-text"></div>
+                        </div>
+                    </div>
+
+                    <div class="footer-actions">
+                        <div class="version-section">
+                            <div class="version-header">
+                                <span class="version-label" data-i18n="version_label">Version</span>
+                                <button class="version-info-btn" type="button" aria-label="Version info">
+                                    <i class="fas fa-info-circle"></i>
+                                </button>
+                            </div>
+                            <div class="version-channel-toggle" role="tablist" aria-label="Version channel">
+                                <button id="versionChannelRelease" class="version-channel-btn is-active" type="button"
+                                    data-channel="release" data-i18n="version_channel_release">OFICIAL</button>
+                                <button id="versionChannelPreRelease" class="version-channel-btn" type="button"
+                                    data-channel="pre-release" data-i18n="version_channel_prerelease">BETA</button>
+                            </div>
+                            <select id="versionSelect" class="version-select">
+                                <option value="latest" data-i18n="loading_label">Loading...</option>
+                            </select>
+                            <div id="versionInfo" class="version-info" data-i18n="version_info_default">Select a version
+                                to see details</div>
+                            <div id="versionTooltip" class="version-tooltip" data-i18n="version_info_default">Select a
+                                version to see details</div>
+                        </div>
+
+                        <button id="playBtn" class="bar-btn primary" data-i18n="play_btn">JUGAR</button>
+                    </div>
+
+                    <button id="modsBtn" class="bar-btn secondary mods-ghost"><span data-i18n="mods_btn">MODS</span>
+                        <span class="badge" data-i18n="beta_badge">BETA</span></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="modsView" class="view" style="display: none;">
+            <div class="mods-container">
+                <div class="mods-header">
+                    <h2 data-i18n="mods_btn">Gestor de Mods</h2>
+                    <div class="mods-tabs">
+                        <button id="tabDiscover" class="tab-btn active" data-i18n="tabs_discover">Descubrir</button>
+                        <button id="tabInstalled" class="tab-btn" data-i18n="tabs_installed">Instalados</button>
+                    </div>
+                </div>
+
+                <div id="discoverSection" class="mods-section active">
+                    <div class="search-bar">
+                        <input type="text" id="modSearchInput" placeholder="Buscar mods..."
+                            data-i18n-placeholder="search_placeholder">
+                        <button id="searchModsBtn"><i class="fas fa-search"></i></button>
+                    </div>
+                    <div id="modsList" class="mods-grid">
+                        <div class="loading-spinner"><i class="fas fa-spinner fa-spin"></i> <span
+                                data-i18n="loading_label">Loading...</span></div>
+                    </div>
+                </div>
+
+                <div id="installedSection" class="mods-section" style="display: none;">
+                    <div id="installedList" class="installed-list">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="modModal" class="modal-overlay">
+        <div class="modal-content mod-modal-content">
+            <button class="modal-close-btn" id="closeModalBtn">&times;</button>
+            <div class="modal-body">
+                <div class="modal-header-row">
+                    <img id="modalModImage" src="" alt="Mod Logo" class="modal-mod-logo">
+                    <div class="modal-header-text">
+                        <h2 id="modalModName">Nombre del Mod</h2>
+                        <p class="modal-mod-author" id="modalModAuthor">por Autor</p>
+                        <div class="modal-mod-meta">
+                            <span class="mod-pill" id="modalModVersion">v1.1.0</span>
+                            <span class="mod-pill" id="modalModDate">Actualizado: 12/12/2024</span>
+                            <span class="mod-pill">
+                                <i class="fas fa-download"></i>
+                                <span id="modalModDownloads">Descargas: 10k</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-description-area">
+                    <h3 data-i18n="modal_about">Acerca de este mod</h3>
+                    <p id="modalModDescription">Descripción del mod...</p>
+                </div>
+            </div>
+
+            <div class="modal-footer-actions">
+                <button id="modalInstallBtn" class="action-btn primary-btn large-btn">
+                    <i class="fas fa-download"></i>
+                    <span data-i18n="modal_install">Instalar Ahora</span></button>
+            </div>
+        </div>
+    </div>
+
+    <div id="customDialog" class="modal-overlay custom-dialog-overlay">
+        <div class="modal-content small-modal">
+            <h2 id="dialogTitle">Title</h2>
+            <p id="dialogMessage">Message</p>
+            <div class="dialog-actions">
+                <button id="dialogCancelBtn" class="action-btn secondary-btn" data-i18n="btn_cancel">Cancel</button>
+                <button id="dialogConfirmBtn" class="action-btn primary-btn" data-i18n="btn_confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="gameLogsModal" class="modal-overlay">
+        <div class="modal-content game-logs-modal">
+            <button class="modal-close-btn" id="closeGameLogsBtn">&times;</button>
+            <h2 data-i18n="game_logs_title">Logs del juego</h2>
+            <div class="game-logs-toolbar">
+                <div class="game-logs-mode-group">
+                    <label for="gameLogsMode" data-i18n="game_logs_mode_label">Modo de lectura</label>
+                    <select id="gameLogsMode" class="settings-select">
+                        <option value="tail-100" data-i18n="game_logs_mode_100">Ultimas 100 lineas</option>
+                        <option value="tail-200" data-i18n="game_logs_mode_200">Ultimas 200 lineas</option>
+                        <option value="tail-500" data-i18n="game_logs_mode_500">Ultimas 500 lineas</option>
+                        <option value="all" data-i18n="game_logs_mode_all">Todos (puede tardar)</option>
+                        <option value="realtime" data-i18n="game_logs_mode_realtime">Tiempo real</option>
+                    </select>
+                </div>
+                <button id="refreshGameLogsBtn" class="action-btn secondary-btn small-btn" type="button">
+                    <i class="fas fa-rotate-right"></i>
+                    <span data-i18n="btn_refresh">Refrescar</span>
+                </button>
+            </div>
+            <p id="gameLogsWarning" class="game-logs-warning" style="display: none;" data-i18n="game_logs_warning_all">
+                Cargar todos los logs puede tardar.
+            </p>
+            <div id="gameLogsMeta" class="game-logs-meta"></div>
+            <pre id="gameLogsOutput" class="game-logs-output"></pre>
+        </div>
+    </div>
+
+    <div id="accountNameModal" class="modal-overlay custom-dialog-overlay">
+        <div class="modal-content small-modal account-name-modal">
+            <h2 data-i18n="add_account_btn">Add account</h2>
+            <input id="accountNameInput" class="account-name-input" type="text" maxlength="20" spellcheck="false"
+                autocomplete="off" data-i18n-placeholder="prompt_account_name" placeholder="Account name">
+            <div class="dialog-actions">
+                <button id="accountNameCancel" class="action-btn secondary-btn" data-i18n="btn_cancel">Cancel</button>
+                <button id="accountNameConfirm" class="action-btn primary-btn" data-i18n="btn_confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.6/dist/purify.min.js" crossorigin="anonymous"></script>
+
+    <script src="scripts/i18n.js"></script>
+    <script src="scripts/navigation.js"></script>
+    <script src="scripts/background-rotator.js"></script>
+    <script src="renderer.js"></script>
+</body>
+
+</html>
